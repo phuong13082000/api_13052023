@@ -1,13 +1,13 @@
 const Product = require("../models/product");
 const cloudinary = require('cloudinary');
-const QueryFinder = require("../Utils/QueryFinder");
+const queryFinder = require("../Utils/queryFinder");
 
 //get all product client
 exports.getAllProduct = (async (req, res) => {
     try {
         const resPerPage = 10;
         const totalProduct = await Product.countDocuments();
-        const apiFeature = new QueryFinder(Product.find(), req.query)
+        const apiFeature = new queryFinder(Product.find(), req.query)
             .search()
             .filter()
             .pagination(resPerPage)

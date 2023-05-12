@@ -1,4 +1,4 @@
-class QueryFinder {
+class queryFinder {
     constructor(query, queryStr) {
         this.query = query;
         this.queryStr = queryStr;
@@ -52,4 +52,4 @@ class QueryFinder {
     }
 }
 
-module.exports = QueryFinder
+module.exports = queryFinder
