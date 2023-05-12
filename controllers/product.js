@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 const cloudinary = require('cloudinary');
-const queryFinder = require("../Utils/queryFinder");
+const queryFinder = require("../utils/queryFinder");
 
 //get all product client
 exports.getAllProduct = (async (req, res) => {
