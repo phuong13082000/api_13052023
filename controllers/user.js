@@ -1,52 +1,31 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const key = process.env.KEY;
 const {userModel} = require("../models/user")
 
 exports.loginUser = (async (req, res) => {
-    const {email, password} = req.body
     try {
-        const user = await userModel.find({email})
-        if (user.length > 0) {
-            bcrypt.compare(password, user[0].password, (err, result) => {
-                if (result) {
-                    var token = jwt.sign({course: "backend"}, key)
-                    res.send({msg: 'Login Done', "token": token, user: user[0]})
-                } else {
-                    res.send("Wrong Credentials")
-                }
-            })
-        } else {
-            res.send("Wrong Credentials")
-        }
+        const {email, password} = req.body;
+        if(!email || !password) return res.send({msg: "User already exists"});
+
+        const user = await userModel.findOne({ email}).select("+password");
+        if(!user) return res.send({msg: "Invalid Email or Password"});
+
+        const isPasswordMatched = await user.comparePassword(password);
+        if(!isPasswordMatched) res.send({msg: "Invalid Email or Password"});
     } catch (err) {
         res.send("Login Error")
     }
 })
 
 exports.registerUser = (async (req, res) => {
-    let {email, password, first_name, last_name, mobile} = req.body
-    const registeruser = await userModel.findOne({email})
-    if (registeruser?.email) {
+    let {email, password, first_name, last_name, mobile} = req.body;
+    const registerUser = await userModel.findOne({email})
+    if (registerUser?.email) {
         res.send({msg: "User already exists"})
     } else {
         try {
-            bcrypt.hash(password, 5, async (err, secure_pwd) => {
-                if (err) {
-                    res.send({msg: "Register Again"})
-                } else {
-                    const user = new userModel({
-                        email,
-                        password: secure_pwd,
-                        first_name,
-                        last_name,
-                        mobile
-                    })
-                    await user.save()
-                    res.send({msg: "User Register Successfully"})
-                }
-            })
+            await userModel.create({email, password, first_name, last_name, mobile});
+            res.send({msg: "User Register Successfully"})
         } catch (err) {
             res.send({msg: "Register Again"})
         }
@@ -55,7 +34,6 @@ exports.registerUser = (async (req, res) => {
 
 exports.getUser = (async (req, res) => {
     const id = req.params.id;
-
     try {
         const user = await userModel.find({_id: id})
         res.send({user: user})
@@ -71,7 +49,7 @@ exports.editUser = (async (req, res) => {
     let password = payload.password
     try {
         if (user.length > 0) {
-            bcrypt.hash(password, 5, async (err, secure_pwd) => {
+            bcrypt.hash(password, 10, async (err, secure_pwd) => {
                 if (err) {
                     res.send("Wrong Credentials 2")
                 } else {

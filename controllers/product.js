@@ -13,11 +13,7 @@ exports.getAllProduct = (async (req, res) => {
             .pagination(resPerPage)
             .sort();
         const products = await apiFeature.query;
-        res.status(200).send({
-            success: true,
-            products,
-            totalProduct
-        });
+        res.status(200).send({success: true, products, totalProduct});
     } catch (error) {
         res.send({error: error.message});
     }
@@ -37,10 +33,7 @@ exports.getProducts = (async (req, res) => {
 exports.getProduct = (async (req, res) => {
     try {
         let product = await Product.findById(req.params.id);
-        res.status(200).json({
-            success: true,
-            product: product
-        });
+        res.status(200).json({success: true, product: product});
     } catch (error) {
         res.status(500).send({msg: "Something Went Wrong!"});
     }
