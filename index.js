@@ -28,24 +28,12 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+app.get('/', (req, res) => {res.send('Server is Running! 🚀')});
 app.use("/api/products", ProductRouter);
 app.use("/api/admin", AdminRouter);
 app.use("/api/cart", CartRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/orderlist", OrderListRouter);
-
-// deployment
-__dirname = path.resolve();
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/client/build')))
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-    });
-} else {
-    app.get('/', (req, res) => {
-        res.send('Server is Running! 🚀');
-    });
-}
 
 connect();
 
