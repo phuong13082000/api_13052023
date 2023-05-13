@@ -3,7 +3,7 @@ const cloudinary = require('cloudinary');
 const queryFinder = require("../utils/queryFinder");
 
 //get all product client
-exports.getAllProduct = (async (req, res) => {
+exports.getAllProduct = async (req, res) => {
     try {
         const resPerPage = 10;
         const totalProduct = await Product.countDocuments();
@@ -13,34 +13,38 @@ exports.getAllProduct = (async (req, res) => {
             .pagination(resPerPage)
             .sort();
         const products = await apiFeature.query;
-        res.status(200).send({success: true, products, totalProduct});
+        res.status(200).send({
+            success: true,
+            products,
+            totalProduct
+        });
     } catch (error) {
         res.send({error: error.message});
     }
-});
+};
 
 //get all product admin
-exports.getProducts = (async (req, res) => {
+exports.getProducts = async (req, res) => {
     try {
         const products = await Product.find();
         res.status(200).send({products: products});
     } catch (error) {
         res.status(500).send({msg: "Something Went Wrong!"});
     }
-});
+};
 
 //get one
-exports.getProduct = (async (req, res) => {
+exports.getProduct = async (req, res) => {
     try {
         let product = await Product.findById(req.params.id);
         res.status(200).json({success: true, product: product});
     } catch (error) {
         res.status(500).send({msg: "Something Went Wrong!"});
     }
-});
+};
 
 //create product
-exports.createProduct = (async (req, res) => {
+exports.createProduct = async (req, res) => {
     let images = [];
     if (typeof req.body.images === "string") {
         images.push(req.body.images);
@@ -67,10 +71,10 @@ exports.createProduct = (async (req, res) => {
     } catch (error) {
         res.status(500).send({msg: "Something Went Wrong!"});
     }
-});
+};
 
 //update product
-exports.updateProduct = (async (req, res) => {
+exports.updateProduct = async (req, res) => {
     const id = req.params.id;
     const payload = req.body;
     let product = await Product.findById(id);
@@ -103,10 +107,10 @@ exports.updateProduct = (async (req, res) => {
 
     await Product.findByIdAndUpdate({_id: id}, payload);
     res.status(200).send({msg: "update product successfully"});
-});
+};
 
 //delete product
-exports.deleteProduct = (async (req, res) => {
+exports.deleteProduct = async (req, res) => {
     try {
         const id = req.params.id;
         const product = await Product.findById(id);
@@ -120,4 +124,4 @@ exports.deleteProduct = (async (req, res) => {
     } catch (error) {
         res.status(500).send({msg: "Something Went Wrong!"});
     }
-});
+};

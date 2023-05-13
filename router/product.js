@@ -9,7 +9,8 @@ const {
     deleteProduct,
 } = require("../controllers/product");
 
-ProductRouter.route('/').get(getProducts);
+ProductRouter.route('/').get(getAllProduct);
+ProductRouter.route('/get/all').get(getProducts);
 ProductRouter.route('/:id').get(getProduct);
 ProductRouter.route('/add').post(createProduct);
 ProductRouter.route('/update/:id').patch(updateProduct);
