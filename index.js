@@ -11,8 +11,9 @@ const PORT = process.env.PORT || 4000;
 
 const ProductRouter = require("./router/product");
 const AdminRouter = require("./router/admin");
+const UserRouter = require("./router/user");
 const CartRouter = require("./router/cart");
-const wishlistRouter = require("./router/wishlist");
+const WishlistRouter = require("./router/wishlist");
 const OrderListRouter = require("./router/orderlist");
 
 app.use(cors());
@@ -30,8 +31,9 @@ cloudinary.config({
 app.get('/', (req, res) => {res.send('Server is Running! 🚀')});
 app.use("/api/products", ProductRouter);
 app.use("/api/admin", AdminRouter);
+app.use("/api/user", UserRouter);
 app.use("/api/cart", CartRouter);
-app.use("/api/wishlist", wishlistRouter);
+app.use("/api/wishlist", WishlistRouter);
 app.use("/api/orderlist", OrderListRouter);
 
 connect();

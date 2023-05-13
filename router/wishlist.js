@@ -1,8 +1,8 @@
 const express = require("express");
 const {createProduct, deleteProduct} = require("../controllers/wishlist");
-const wishlistRouter = express.Router();
+const WishlistRouter = express.Router();
 
-wishlistRouter.route('/add/:userId').post(createProduct);
-wishlistRouter.route('/delete/:userId').post(deleteProduct);
+WishlistRouter.route('/add/:userId').post(createProduct);
+WishlistRouter.route('/delete/:userId').post(deleteProduct);
 
-module.exports = wishlistRouter;
+module.exports = WishlistRouter;
