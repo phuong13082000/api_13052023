@@ -6,7 +6,6 @@ const cloudinary = require('cloudinary');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 const connect = require("./config/database");
 const PORT = process.env.PORT || 4000;
 
